@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" style="background-color: #05070a; font-family: 'Courier New', ui-monospace, Consolas, monospace;">
+  <defs>
+    <!-- Background Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0, 240, 255, 0.05)" stroke-width="1"/>
+    </pattern>
+
+    <!-- Scanline Pattern -->
+    <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="rgba(0, 0, 0, 0.2)" />
+      <rect y="2" width="4" height="2" fill="rgba(18, 16, 16, 0)" />
+    </pattern>
+
+    <!-- Drop Shadow for Terminal Frame -->
+    <filter id="terminal-shadow" x="0" y="0" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="0" flood-color="#0070FF" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background Layer -->
+  <rect width="800" height="1000" fill="#05070a" />
+  <rect width="800" height="1000" fill="url(#grid)" />
+  <rect width="800" height="1000" fill="url(#scanlines)" opacity="0.3" pointer-events="none" />
+
+  <!-- Title -->
+  <text x="50" y="60" fill="#E6EDF3" font-size="24" font-weight="bold" letter-spacing="2">TERMINAL INTERFACE MOCKUP</text>
+
+  <!-- TERMINAL FRAME -->
+  <g transform="translate(50, 120)">
+    <rect width="700" height="800" fill="#05070a" stroke="#0070FF" stroke-width="1" filter="url(#terminal-shadow)" />
+    
+    <!-- Header -->
+    <rect width="700" height="36" fill="#0070FF" fill-opacity="0.15" />
+    <line x1="0" y1="36" x2="700" y2="36" stroke="#0070FF" stroke-width="1" />
+    <text x="16" y="24" fill="#0070FF" font-size="14" font-weight="bold" letter-spacing="1">VESPER_TERMINAL</text>
+    <text x="600" y="24" fill="#0070FF" font-size="12" letter-spacing="1" opacity="0.8">[ 4 MSG ]</text>
+    
+    <!-- Message 1: User -->
+    <g transform="translate(16, 60)">
+      <text x="0" y="20" fill="#E6EDF3" font-size="14" opacity="0.5">[ 10:22:15 ] OPERATOR:</text>
+      <text x="0" y="44" fill="#E6EDF3" font-size="16">Initiate the tabletop view and draw 3 cards.</text>
+    </g>
+
+    <!-- Message 2: System/Vesper -->
+    <g transform="translate(16, 140)">
+      <text x="0" y="20" fill="#00F0FF" font-size="14" opacity="0.5">[ 10:22:18 ] VESPER:</text>
+      <rect x="0" y="32" width="668" height="60" fill="rgba(0,240,255,0.05)" stroke="rgba(0,240,255,0.2)" stroke-width="1" />
+      <text x="12" y="56" fill="#E6EDF3" font-size="15" line-height="1.5">
+        <tspan x="12" dy="0">[ RESPONSE_ID:8F2A ] Very well. I am establishing the latent connection now.</tspan>
+        <tspan x="12" dy="24">Please wait while the probability matrix collapses.</tspan>
+      </text>
+    </g>
+
+    <!-- Message 3: System Log -->
+    <g transform="translate(16, 240)">
+      <text x="0" y="20" fill="#FFB800" font-size="14" opacity="0.8">&gt; WARNING: MINOR DRIFT DETECTED IN NODE 3.</text>
+      <text x="0" y="44" fill="#00FF41" font-size="14" opacity="0.8">&gt; COMPENSATING... SUCCESS.</text>
+    </g>
+
+    <!-- Message 4: Vesper with suggestion -->
+    <g transform="translate(16, 320)">
+      <text x="0" y="20" fill="#00F0FF" font-size="14" opacity="0.5">[ 10:23:05 ] VESPER:</text>
+      <text x="0" y="44" fill="#E6EDF3" font-size="15">Shall we proceed to the tabletop interface?</text>
+      
+      <!-- Suggestion Action Box -->
+      <rect x="0" y="60" width="300" height="40" fill="rgba(139, 92, 246, 0.1)" stroke="#8B5CF6" stroke-width="1" />
+      <text x="150" y="85" fill="#8B5CF6" font-size="14" font-weight="bold" letter-spacing="1" text-anchor="middle">YES [PROCEED]</text>
+    </g>
+
+    <!-- Awaiting Intent Bar -->
+    <g transform="translate(16, 680)">
+      <rect width="668" height="36" fill="rgba(0, 0, 0, 0.8)" stroke="rgba(255, 102, 0, 0.4)" stroke-width="1" />
+      <text x="12" y="23" fill="#FF6600" font-size="12" letter-spacing="2">[ AWAITING YOUR INPUT. . . ]</text>
+      
+      <!-- Close button on intent bar -->
+      <rect x="632" y="0" width="36" height="36" fill="rgba(255, 0, 0, 0.1)" stroke="rgba(255, 0, 0, 0.4)" stroke-width="1" />
+      <text x="650" y="23" fill="#FF6600" font-size="16" text-anchor="middle">×</text>
+    </g>
+
+    <!-- Sync Bar -->
+    <g transform="translate(0, 740)">
+      <rect width="700" height="8" fill="#1a1b1e" />
+      <rect width="450" height="8" fill="#00F0FF" opacity="0.8" />
+      <text x="10" y="-8" fill="#00F0FF" font-size="10" letter-spacing="2">SYNC_BAR // LATENT BRIDGE: 64%</text>
+    </g>
+
+    <!-- Input Row -->
+    <g transform="translate(0, 748)">
+      <rect width="700" height="52" fill="#05070a" stroke="#0070FF" stroke-width="1" />
+      
+      <!-- Terminal Icon (mock) -->
+      <text x="16" y="32" fill="#0070FF" font-size="18" opacity="0.7">&gt;</text>
+      
+      <!-- Input Field Placeholder -->
+      <text x="40" y="31" fill="#E6EDF3" font-size="16" opacity="0.6">ENTER MESSAGE...</text>
+      <text x="210" y="31" fill="#E6EDF3" font-size="16" opacity="0.8">|</text> <!-- Cursor cursor -->
+      
+      <!-- Mic Button -->
+      <circle cx="580" cy="26" r="18" fill="transparent" stroke="#0070FF" stroke-width="1" />
+      <circle cx="580" cy="26" r="6" fill="#0070FF" /> <!-- Mic Icon placeholder -->
+      
+      <!-- Send Button -->
+      <rect x="610" y="10" width="80" height="32" fill="rgba(255, 102, 0, 0.1)" stroke="#FF6600" stroke-width="1" />
+      <text x="650" y="31" fill="#FF6600" font-size="12" font-weight="bold" letter-spacing="1" text-anchor="middle">SEND</text>
+    </g>
+  </g>
+</svg>

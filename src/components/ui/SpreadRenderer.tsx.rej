@@ -1,0 +1,17 @@
+@@ -361,7 +361,7 @@
+ 
+     if (isGuidedMode && activeStep !== undefined && nodeId > activeStep) {
+       console.warn("Node locked. Please complete the spread sequentially.");
+-      import('../utils/audio').then(({ vesperAudio, vesperHaptics }) => {
++      import('../../modules/utils/audio').then(({ vesperAudio, vesperHaptics }) => {
+         vesperHaptics.triggerWarning();
+         vesperAudio.playWarningAlarm();
+       });
+@@ -368,6 +368,6 @@
+     }
+     
+-    import('../utils/audio').then(({ vesperAudio, vesperHaptics }) => {
++    import('../../modules/utils/audio').then(({ vesperAudio, vesperHaptics }) => {
+       vesperHaptics.triggerCardDrawn();
+       vesperAudio.playCardDraw();
+     });

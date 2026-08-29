@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: vesper-grimoire
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: VITE_GEMINI_API_KEY
+        sync: false # Set this securely in the Render dashboard env settings

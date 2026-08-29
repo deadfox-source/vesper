@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="800" height="1200" style="background-color: #05070a; font-family: 'Courier New', ui-monospace, Consolas, monospace;">
+  <defs>
+    <!-- Background Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0, 240, 255, 0.05)" stroke-width="1"/>
+    </pattern>
+
+    <!-- Scanline Pattern -->
+    <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="rgba(0, 0, 0, 0.2)" />
+      <rect y="2" width="4" height="2" fill="rgba(18, 16, 16, 0)" />
+    </pattern>
+  </defs>
+
+  <!-- Background Layer -->
+  <rect width="800" height="1200" fill="#05070a" />
+  <rect width="800" height="1200" fill="url(#grid)" />
+  <rect width="800" height="1200" fill="url(#scanlines)" opacity="0.3" pointer-events="none" />
+
+  <!-- Title -->
+  <text x="50" y="60" fill="#E6EDF3" font-size="24" font-weight="bold" letter-spacing="2">TABLETOP VIEW MOCKUP</text>
+
+  <!-- Header -->
+  <g transform="translate(50, 100)">
+    <rect width="700" height="60" fill="#05070a" stroke="#FF6600" stroke-width="1" />
+    <line x1="0" y1="60" x2="700" y2="60" stroke="#FF6600" stroke-width="2" />
+    <text x="20" y="36" fill="#FF6600" font-size="18" font-weight="bold" letter-spacing="2">MISSION_GRID_INTERFACE</text>
+    
+    <!-- Telemetry -->
+    <g transform="translate(400, 20)">
+      <rect x="0" y="0" width="80" height="20" fill="rgba(255,102,0,0.05)" stroke="rgba(255,102,0,0.2)" />
+      <text x="10" y="14" fill="#FF6600" font-size="10">SUBJ: OP</text>
+
+      <rect x="90" y="0" width="100" height="20" fill="rgba(255,102,0,0.05)" stroke="rgba(255,102,0,0.2)" />
+      <text x="100" y="14" fill="#FF6600" font-size="10">GRID: MACRO</text>
+
+      <rect x="200" y="0" width="80" height="20" fill="rgba(0,240,255,0.05)" stroke="rgba(0,240,255,0.2)" />
+      <text x="210" y="14" fill="#00F0FF" font-size="10">AUDIO: ON</text>
+    </g>
+  </g>
+
+  <!-- Tabletop / Spread Area -->
+  <g transform="translate(50, 200)">
+    <!-- Sierpinski Pet (Placeholder) -->
+    <path d="M 350 50 L 400 150 L 300 150 Z" fill="rgba(0,240,255,0.05)" stroke="#00F0FF" stroke-width="1" opacity="0.3"/>
+    <path d="M 350 150 L 400 250 L 300 250 Z" fill="rgba(0,240,255,0.05)" stroke="#00F0FF" stroke-width="1" opacity="0.3"/>
+    
+    <!-- Spread Nodes (Example: 3-Card Spread) -->
+    <!-- Node 1 (Past/State) -->
+    <g transform="translate(150, 300)">
+      <rect x="-60" y="-90" width="120" height="180" fill="rgba(0,240,255,0.05)" stroke="#00F0FF" stroke-width="1" />
+      <text x="0" y="110" fill="#E6EDF3" font-size="12" text-anchor="middle">NODE 1</text>
+      <!-- Inside Card -->
+      <rect x="-50" y="-80" width="100" height="160" fill="rgba(139,92,246,0.1)" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="2 2"/>
+      <text x="0" y="-60" fill="#8B5CF6" font-size="10" text-anchor="middle">THE FOOL</text>
+      <text x="0" y="0" fill="#8B5CF6" font-size="24" text-anchor="middle">0</text>
+    </g>
+
+    <!-- Node 2 (Present/Challenge) -->
+    <g transform="translate(350, 300)">
+      <rect x="-60" y="-90" width="120" height="180" fill="#05070a" stroke="#FF6600" stroke-width="2" /> <!-- Active Node -->
+      <!-- Pulse / Glow -->
+      <rect x="-64" y="-94" width="128" height="188" fill="none" stroke="#FF6600" stroke-width="1" opacity="0.5" />
+      <text x="0" y="110" fill="#FF6600" font-size="12" text-anchor="middle" font-weight="bold">NODE 2 (AWAITING)</text>
+    </g>
+
+    <!-- Node 3 (Future/Resolution) -->
+    <g transform="translate(550, 300)">
+      <rect x="-60" y="-90" width="120" height="180" fill="#05070a" stroke="rgba(0,240,255,0.3)" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="0" y="110" fill="rgba(230,237,243,0.5)" font-size="12" text-anchor="middle">NODE 3</text>
+    </g>
+    
+    <!-- Connecting Lines -->
+    <line x1="220" y1="300" x2="280" y2="300" stroke="#00F0FF" stroke-width="1" stroke-dasharray="4" opacity="0.5"/>
+    <line x1="420" y1="300" x2="480" y2="300" stroke="#00F0FF" stroke-width="1" stroke-dasharray="4" opacity="0.5"/>
+  </g>
+
+  <!-- Bottom Panel: Vesper Terminal (Pinned to bottom) -->
+  <g transform="translate(50, 850)">
+    <rect width="700" height="250" fill="#05070a" stroke="#00F0FF" stroke-width="1" />
+    
+    <!-- Terminal Header -->
+    <rect width="700" height="30" fill="#00F0FF" fill-opacity="0.1" />
+    <line x1="0" y1="30" x2="700" y2="30" stroke="#00F0FF" stroke-width="1" />
+    <text x="16" y="20" fill="#00F0FF" font-size="12" font-weight="bold">VESPER_TERMINAL</text>
+    <text x="620" y="20" fill="#00F0FF" font-size="10" opacity="0.6">[ COLLAPSE ]</text>
+
+    <!-- Chat Log -->
+    <g transform="translate(16, 50)">
+      <text x="0" y="14" fill="#00F0FF" font-size="12" opacity="0.5">[ 10:23:05 ] VESPER:</text>
+      <text x="0" y="32" fill="#E6EDF3" font-size="14">The matrix is prepared. Tap the illuminated node to focus your</text>
+      <text x="0" y="52" fill="#E6EDF3" font-size="14">intent and select your first card.</text>
+    </g>
+    
+    <!-- Input Field Area -->
+    <g transform="translate(0, 198)">
+      <rect width="700" height="52" fill="#05070a" stroke="rgba(0,240,255,0.2)" stroke-width="1" />
+      <text x="16" y="32" fill="#00F0FF" font-size="18" opacity="0.7">&gt;</text>
+      <text x="40" y="31" fill="#E6EDF3" font-size="14" opacity="0.6">RESPOND...</text>
+      <text x="125" y="31" fill="#E6EDF3" font-size="14" opacity="0.8">|</text>
+      
+      <!-- Mic Button -->
+      <circle cx="650" cy="26" r="16" fill="transparent" stroke="#00F0FF" stroke-width="1" />
+      <text x="650" y="30" fill="#00F0FF" font-size="12" text-anchor="middle">M</text>
+    </g>
+  </g>
+</svg>

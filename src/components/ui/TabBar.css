@@ -1,0 +1,71 @@
+/* TabBar — DOS BIOS Selection HUD */
+.tabbar-container {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around;
+  align-items: stretch; /* align to top so content sits in the 60px, padding handles safe area */
+  background-color: var(--void-black);
+  height: var(--tabbar-total);
+  padding-top: 0;
+  padding-bottom: 0; /* Remove padding from container to allow items to stretch to the bottom */
+  position: absolute !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 500;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 240, 255, 0.4);
+  flex: 1;
+  height: 100%; /* Fill the entire height of the tabbar container */
+  padding-bottom: max(4px, calc(var(--safe-area-bottom) * 0.55)); /* Reduce bottom padding to eliminate extra blank space under buttons */
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  position: relative;
+  gap: 3px;
+  text-decoration: none;
+  /* Enforce minimum touch target */
+  min-width: 44px;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+.tab-item.active-vesper {
+  color: var(--void-black) !important;
+  background-color: var(--vesper-blue) !important;
+}
+
+.tab-item.active-grid {
+  color: var(--void-black) !important;
+  background-color: var(--eva-cyan) !important;
+}
+
+.tab-item.active-records {
+  color: var(--void-black) !important;
+  background-color: var(--magi-violet) !important;
+}
+
+.tab-item.active, .tab-item-active {
+  color: var(--void-black) !important;
+  background-color: var(--eva-cyan) !important;
+}
+
+.tab-label {
+  font-size: 0.55rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: var(--sans);
+}
+
+.tab-item:active {
+  opacity: 0.7;
+}

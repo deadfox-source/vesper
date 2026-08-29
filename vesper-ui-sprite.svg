@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="800" height="1200" style="background-color: #05070a; font-family: 'Courier New', ui-monospace, Consolas, monospace;">
+  <defs>
+    <!-- Background Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0, 240, 255, 0.05)" stroke-width="1"/>
+    </pattern>
+
+    <!-- Scanline Pattern -->
+    <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="rgba(0, 0, 0, 0.2)" />
+      <rect y="2" width="4" height="2" fill="rgba(18, 16, 16, 0)" />
+    </pattern>
+  </defs>
+
+  <!-- Background Layer -->
+  <rect width="800" height="1200" fill="#05070a" />
+  <rect width="800" height="1200" fill="url(#grid)" />
+  <rect width="800" height="1200" fill="url(#scanlines)" opacity="0.3" pointer-events="none" />
+
+  <!-- Title -->
+  <text x="50" y="60" fill="#E6EDF3" font-size="24" font-weight="bold" letter-spacing="2">VESPER SPRITE &amp; SELECTION MOCKUP</text>
+
+  <!-- VESPER SPRITE COMPONENT -->
+  <g transform="translate(50, 120)">
+    <rect width="350" height="400" fill="#05070a" stroke="#00F0FF" stroke-width="1" />
+    
+    <!-- Sprite Header -->
+    <rect width="350" height="24" fill="#0070FF" />
+    <text x="8" y="16" fill="#05070a" font-size="12" font-weight="bold">&gt; VESPER_CORE_v9</text>
+    <text x="310" y="16" fill="rgba(0,0,0,0.5)" font-size="12" font-weight="bold">[+]</text>
+    <text x="280" y="16" fill="rgba(0,0,0,0.5)" font-size="12" font-weight="bold">[ ]</text>
+    
+    <!-- Status Bar -->
+    <g transform="translate(0, 24)">
+      <rect width="350" height="20" fill="transparent" stroke="rgba(0,240,255,0.2)" stroke-width="1" />
+      <text x="8" y="14" fill="#E6EDF3" font-size="10">MOOD: <tspan fill="#00F0FF">IDLE</tspan></text>
+      <text x="290" y="14" fill="#E6EDF3" font-size="10">NRG: <tspan fill="#00F0FF">100%</tspan></text>
+    </g>
+
+    <!-- ASCII Avatar Display (Simulated) -->
+    <g transform="translate(0, 44)">
+      <!-- Listening Ring -->
+      <circle cx="175" cy="170" r="100" fill="none" stroke="#FF6600" stroke-width="2" opacity="0.4" stroke-dasharray="8 4"/>
+      
+      <!-- ASCII Art -->
+      <text x="175" y="100" fill="#00F0FF" font-size="10" text-anchor="middle" font-family="monospace">
+        <tspan x="175" dy="10">    .-------.    </tspan>
+        <tspan x="175" dy="10">  .'         '.  </tspan>
+        <tspan x="175" dy="10"> /   O     O   \ </tspan>
+        <tspan x="175" dy="10">|      ___      |</tspan>
+        <tspan x="175" dy="10"> \    \___/    / </tspan>
+        <tspan x="175" dy="10">  '.         .'  </tspan>
+        <tspan x="175" dy="10">    '-------'    </tspan>
+        <tspan x="175" dy="10">   VESPER AI     </tspan>
+      </text>
+    </g>
+  </g>
+
+  <!-- SUBJECT PROFILE & TEMPLATE LIST -->
+  <g transform="translate(430, 120)">
+    
+    <!-- Subject Profile -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="130" height="20" fill="#00F0FF" />
+      <text x="10" y="14" fill="#05070a" font-size="10" font-weight="bold">&gt; SUBJECT_PROFILE</text>
+      
+      <rect x="0" y="30" width="320" height="90" fill="rgba(139,92,246,0.03)" stroke="#8B5CF6" stroke-width="1" />
+      
+      <!-- Toggle Buttons -->
+      <rect x="15" y="45" width="140" height="30" fill="#00F0FF" stroke="#00F0FF" stroke-width="1" />
+      <text x="85" y="64" fill="#05070a" font-size="12" font-weight="bold" text-anchor="middle">[ SELF ]</text>
+      
+      <rect x="165" y="45" width="140" height="30" fill="transparent" stroke="rgba(139,92,246,0.3)" stroke-width="1" />
+      <text x="235" y="64" fill="#8B5CF6" font-size="12" font-weight="bold" text-anchor="middle">[ OTHER ]</text>
+    </g>
+
+    <!-- Templates -->
+    <g transform="translate(0, 150)">
+      <rect x="0" y="0" width="320" height="20" fill="#00F0FF" />
+      <text x="10" y="14" fill="#05070a" font-size="10" font-weight="bold">&gt; INITIALIZATION_TEMPLATES</text>
+      <text x="240" y="14" fill="#05070a" font-size="10" opacity="0.8">[ AVAIL: 3 ]</text>
+
+      <!-- Template 1: Selected -->
+      <g transform="translate(0, 30)">
+        <rect x="0" y="0" width="320" height="100" fill="#00F0FF" stroke="#00F0FF" stroke-width="2" />
+        <text x="15" y="25" fill="#05070a" font-size="14" font-weight="bold">OPORD_MACRO_SYSTEM</text>
+        <rect x="250" y="13" width="55" height="14" fill="transparent" stroke="#05070a" stroke-width="1" />
+        <text x="277" y="23" fill="#05070a" font-size="8" font-weight="bold" text-anchor="middle">10 NODES</text>
+        <text x="15" y="45" fill="#05070a" font-size="10" font-weight="bold">[ FULL SYSTEM SCAN ]</text>
+        <text x="15" y="65" fill="#05070a" font-size="10">A comprehensive 10-node mapping</text>
+        <text x="15" y="80" fill="#05070a" font-size="10">based on the Tree of Life.</text>
+      </g>
+
+      <!-- Template 2: Unselected -->
+      <g transform="translate(0, 140)">
+        <rect x="0" y="0" width="320" height="100" fill="#05070a" stroke="#00F0FF" stroke-width="2" />
+        <text x="15" y="25" fill="#E6EDF3" font-size="14" font-weight="bold">OPORD_INFILTRATION</text>
+        <rect x="250" y="13" width="55" height="14" fill="transparent" stroke="#FF6600" stroke-width="1" />
+        <text x="277" y="23" fill="#FF6600" font-size="8" font-weight="bold" text-anchor="middle">3 NODES</text>
+        <text x="15" y="45" fill="#FF6600" font-size="10" font-weight="bold">[ QUICK INQUIRY ]</text>
+        <text x="15" y="65" fill="rgba(230,237,243,0.7)" font-size="10">A focused 3-node spread. Identify</text>
+        <text x="15" y="80" fill="rgba(230,237,243,0.7)" font-size="10">your current state.</text>
+      </g>
+
+    </g>
+  </g>
+
+  <!-- Sticky Deploy Buttons -->
+  <g transform="translate(50, 750)">
+    <rect width="700" height="100" fill="rgba(5,7,10,0.98)" stroke="#FF6600" stroke-width="2" />
+    <rect x="20" y="20" width="320" height="60" fill="rgba(0,240,255,0.1)" stroke="#00F0FF" stroke-width="2" />
+    <text x="180" y="55" fill="#00F0FF" font-size="16" font-weight="bold" letter-spacing="4" text-anchor="middle">[ GUIDED PROTOCOL ]</text>
+
+    <rect x="360" y="20" width="320" height="60" fill="transparent" stroke="#FF6600" stroke-width="2" />
+    <text x="520" y="55" fill="#FF6600" font-size="16" font-weight="bold" letter-spacing="4" text-anchor="middle">[ MANUAL PROTOCOL ]</text>
+  </g>
+
+</svg>

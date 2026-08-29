@@ -1,0 +1,100 @@
+.vesper-entity-wrapper {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Structural Window Chassis */
+.vesper-window-chassis {
+  width: 100%;
+  background: var(--void-black);
+  border: 2px solid var(--vesper-blue);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Hacker Window Header — Archive-style block heading */
+.vesper-window-header {
+  height: auto;
+  background: var(--vesper-blue);
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 10px;
+  font-family: var(--font-tech), 'Space Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--void-black);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.vesper-window-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.ctrl-btn {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.ctrl-btn:hover {
+  opacity: 1;
+  text-shadow: 0 0 5px var(--eva-cyan);
+}
+
+/* Status Bar */
+.vesper-window-statusbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  border-bottom: 1px dashed var(--vesper-blue);
+  font-family: var(--font-tech), 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+}
+
+.stat-block {
+  display: flex;
+  gap: 8px;
+}
+
+.stat-block.right {
+  text-align: right;
+}
+
+.stat-value {
+  color: var(--eva-cyan);
+  font-weight: bold;
+}
+
+/* The core container and sprite */
+.vesper-sprite-container {
+  position: relative;
+  width: 100%;
+  height: 28vh;
+  min-height: 180px;
+  max-height: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: var(--void-black);
+}
+
+/* On very short screens (SE portrait) shrink further */
+@media (max-height: 700px) {
+  .vesper-sprite-container {
+    height: 22vh;
+    min-height: 150px;
+  }
+}
+
+

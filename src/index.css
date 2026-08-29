@@ -1,0 +1,400 @@
+:root {
+  /* DOS Architecture: Rigid & High-Contrast */
+  --void-black: #05070a;
+  --void-gray: #1a1b1e;
+  --ghost-white: #E6EDF3;
+  --eva-cyan: #00F0FF;
+  --vesper-blue: #3894FF;
+  --magi-violet: #C084FC;
+  --magi-orange: #FF6600;
+  --warning-amber: #FFB800;
+  --bios-green: #00FF41;
+  --sans: 'Courier New', ui-monospace, Consolas, monospace;
+
+  /* Safe area for iPhone home indicator */
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --tabbar-height: 52px;
+  --tabbar-total: calc(52px + max(4px, calc(var(--safe-area-bottom) * 0.55)));
+}
+
+@keyframes orange-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.terminal-orange-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 15px;
+  background-color: var(--magi-orange);
+  margin-right: 4px;
+  animation: orange-cursor-blink 1.06s ease-in-out infinite;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--eva-cyan);
+  outline-offset: 2px;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: var(--real-viewport-height, 100%);
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--void-black);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--real-viewport-height, 100%);
+  overflow: hidden;
+  overscroll-behavior-y: none;
+  background-color: var(--void-black);
+}
+
+#root {
+  background-color: var(--void-black);
+  color: var(--ghost-white);
+  font-family: var(--sans);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--real-viewport-height, 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* Native PWA Touch Optimizations */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Strictly prevent iOS Safari auto-zoom on input focus and restore selection */
+input, textarea, select {
+  font-size: 16px !important;
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* -----------------------------------------------------------
+   STRUCTURAL CLASSES
+   ----------------------------------------------------------- */
+
+.material-background {
+  position: relative;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+/* Standardized Frame */
+.terminal-frame {
+  position: relative;
+  border: 1px solid var(--eva-cyan);
+  background: var(--void-black);
+  box-shadow: 2px 2px 0px rgba(0, 240, 255, 0.2);
+  border-radius: 0px !important;
+  width: 100%;
+}
+
+/* Material Terminal */
+.material-terminal {
+  position: relative;
+  background: var(--void-black);
+  border: 1px solid var(--eva-cyan);
+  border-radius: 0px !important;
+  box-sizing: border-box;
+}
+
+/* Glass Panel (modals) */
+.glass-panel {
+  background: rgba(5, 7, 10, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Buttons */
+.primary-btn, .primary-shard-btn {
+  background: transparent;
+  color: var(--eva-cyan);
+  border: 1px solid var(--eva-cyan);
+  padding: 12px 24px;
+  font-family: var(--sans);
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: none;
+  border-radius: 0px !important;
+  /* Minimum touch target */
+  min-height: 44px;
+}
+
+.primary-btn:hover, .primary-shard-btn:hover {
+  background: var(--eva-cyan);
+  color: var(--void-black);
+}
+
+/* Telemetry strip */
+.telemetry {
+  font-size: 0.7rem;
+  color: var(--eva-cyan);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: var(--sans);
+  background: rgba(0, 240, 255, 0.05);
+  padding: 2px 6px;
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.telemetry-header {
+  border-bottom: 2px solid var(--eva-cyan);
+  background: var(--void-black);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.holographic-shard, .shard-container {
+  border: 1px solid var(--eva-cyan);
+  background: rgba(5, 7, 10, 0.95);
+  box-shadow: inset 0 0 5px rgba(0, 240, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  border-radius: 0px !important;
+}
+
+/* -----------------------------------------------------------
+   ANIMATIONS
+   ----------------------------------------------------------- */
+
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.05;
+}
+
+/* -----------------------------------------------------------
+   SCROLLBARS
+   ----------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--void-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--void-gray);
+  border: 1px solid var(--eva-cyan);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--void-gray) var(--void-black);
+}
+
+/* -----------------------------------------------------------
+   LAYOUT UTILITIES
+   ----------------------------------------------------------- */
+
+.onboarding-container, .archive-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 20px;
+  padding-bottom: calc(80px + var(--safe-area-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  box-sizing: border-box;
+}
+
+/* Grid dot background */
+.data-wave-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Pulse animation for speaking indicator */
+@keyframes speaking-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes spin-cw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-ccw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.speaking-dot {
+  animation: speaking-pulse 0.8s ease-in-out infinite;
+}
+
+/* Vesper inline markup — intense token pulse */
+@keyframes vesper-pulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(255, 102, 0, 0.6); }
+  50%       { opacity: 0.75; text-shadow: 0 0 16px rgba(255, 102, 0, 0.9); }
+}
+
+.chromatic-aberration {
+  animation: chromatic-glitch 0.33s 3 forwards;
+  will-change: text-shadow;
+}
+
+@keyframes chromatic-glitch {
+  0% { text-shadow: 1px 0 0 rgba(255,0,0,0.8), -1px 0 0 rgba(0,255,255,0.8); }
+  25% { text-shadow: -1px 0 0 rgba(255,0,0,0.8), 1px 0 0 rgba(0,255,255,0.8); }
+  50% { text-shadow: 1px 1px 0 rgba(255,0,0,0.8), -1px -1px 0 rgba(0,255,255,0.8); }
+  75% { text-shadow: -1px -1px 0 rgba(255,0,0,0.8), 1px 1px 0 rgba(0,255,255,0.8); }
+  100% { text-shadow: 1px 0 0 rgba(255,0,0,0.8), -1px 0 0 rgba(0,255,255,0.8); }
+}
+
+/* Skia Visualist Shaders */
+.magnetic-decay {
+  animation: vhs-warble 1s 1 linear forwards;
+  filter: contrast(120%) brightness(90%) saturate(80%);
+  will-change: transform, filter;
+}
+
+@keyframes vhs-warble {
+  0%   { transform: skewX(0deg) translateX(0); filter: blur(0px); }
+  2%   { transform: skewX(10deg) translateX(2px); filter: blur(1px) contrast(200%); }
+  4%   { transform: skewX(-10deg) translateX(-2px); filter: blur(0px); }
+  6%   { transform: skewX(0deg) translateX(0); filter: blur(0.5px); }
+  50%  { transform: skewX(0deg) translateX(0); filter: blur(0px); }
+  90%  { transform: skewX(0deg) translateX(0); filter: blur(0px); }
+  95%  { transform: skewX(20deg) translateX(5px); filter: blur(3px) drop-shadow(4px 0 0 rgba(0,255,255,0.8)); }
+  100% { transform: skewX(0deg) translateX(0); filter: blur(0px); }
+}
+
+.magenta-glitch {
+  animation: magenta-shift 0.15s 6 forwards;
+  will-change: filter, transform, box-shadow;
+}
+
+@keyframes magenta-shift {
+  0% { 
+    filter: hue-rotate(0deg); 
+    box-shadow: inset 0 0 10px rgba(255, 0, 255, 0);
+  }
+  25% { 
+    filter: hue-rotate(90deg) contrast(150%); 
+    transform: translate(1px, -1px);
+    box-shadow: inset 0 0 20px rgba(255, 0, 255, 0.4);
+  }
+  50% { 
+    filter: hue-rotate(180deg); 
+    transform: translate(-1px, 1px);
+  }
+  75% { 
+    filter: hue-rotate(270deg) contrast(120%); 
+    transform: translate(2px, 0px);
+    box-shadow: inset 0 0 40px rgba(255, 0, 255, 0.6);
+  }
+  100% { 
+    filter: hue-rotate(360deg); 
+    transform: translate(0px, 0px);
+  }
+}
+
+/* -----------------------------------------------------------
+   ACCESSIBILITY & PREFERS REDUCED MOTION
+   ----------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .magenta-glitch, 
+  .chromatic-aberration, 
+  .magnetic-decay, 
+  .speaking-dot,
+  .speaking-pulse,
+  .cyber-ascii-art,
+  .cyber-ascii-art-severe {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  .scanline {
+    display: none !important;
+  }
+}
+
+/* -----------------------------------------------------------
+   CRT & CYBER-ASCII EFFECT KEYFRAMES
+   ----------------------------------------------------------- */
+@keyframes crt-flicker {
+  0%   { opacity: 0.95; }
+  5%   { opacity: 0.85; }
+  10%  { opacity: 0.95; }
+  15%  { opacity: 1.0; }
+  50%  { opacity: 0.98; }
+  60%  { opacity: 0.85; }
+  70%  { opacity: 1.0; }
+  100% { opacity: 0.95; }
+}
+
+@keyframes crt-flicker-severe {
+  0%   { opacity: 0.95; transform: translate(0,0) scale(1.0); filter: hue-rotate(0deg); }
+  10%  { opacity: 0.50; transform: translate(-2px,1px) scale(0.99); filter: hue-rotate(-20deg); }
+  20%  { opacity: 0.95; transform: translate(0,0) scale(1.0); }
+  50%  { opacity: 0.90; transform: translate(1px,-1px) scale(1.01); }
+  70%  { opacity: 0.40; transform: translate(2px,0px) scale(1.02); filter: hue-rotate(30deg); }
+  100% { opacity: 0.95; transform: translate(0,0) scale(1.0); }
+}
+
+.cyber-ascii-art {
+  animation: crt-flicker 4s infinite;
+  will-change: opacity;
+}
+
+.cyber-ascii-art-severe {
+  animation: crt-flicker-severe 0.8s infinite;
+  will-change: opacity, transform, filter;
+}
+

@@ -1,0 +1,52 @@
+@@ -145,7 +145,11 @@
+         <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+-           onClick={() => setIsReflectionModalOpen(true)}
++           onClick={() => {
++             vesperHaptics.triggerTacticalClick();
++             vesperAudio.playTerminalBlip();
++             setIsReflectionModalOpen(true);
++           }}
+            className="primary-btn holographic-border"
+            style={{
+              background: 'var(--magi-violet)',
+@@ -170,7 +170,11 @@
+ 
+         <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+           <button 
+-            onClick={() => setActiveTab('readings')}
++            onClick={() => {
++              vesperHaptics.triggerTacticalClick();
++              vesperAudio.playTerminalBlip();
++              setActiveTab('readings');
++            }}
+             style={{ 
+               background: activeTab === 'readings' ? 'var(--magi-violet)' : 'transparent', 
+               color: activeTab === 'readings' ? 'var(--void-black)' : 'var(--ghost-white)',
+@@ -183,7 +183,11 @@
+             &gt; INQUIRY MISSIONS
+           </button>
+           <button 
+-            onClick={() => setActiveTab('journal')}
++            onClick={() => {
++              vesperHaptics.triggerTacticalClick();
++              vesperAudio.playTerminalBlip();
++              setActiveTab('journal');
++            }}
+             style={{ 
+               background: activeTab === 'journal' ? 'var(--magi-violet)' : 'transparent', 
+               color: activeTab === 'journal' ? 'var(--void-black)' : 'var(--ghost-white)',
+@@ -196,7 +196,11 @@
+             &gt; JOURNAL ENTRIES
+           </button>
+           <button 
+-            onClick={() => setActiveTab('conversations')}
++            onClick={() => {
++              vesperHaptics.triggerTacticalClick();
++              vesperAudio.playTerminalBlip();
++              setActiveTab('conversations');
++            }}
+             style={{ 
+               background: activeTab === 'conversations' ? 'var(--eva-cyan)' : 'transparent', 
+               color: activeTab === 'conversations' ? 'var(--void-black)' : 'var(--ghost-white)',

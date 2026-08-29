@@ -1,0 +1,23 @@
+@@ -361,10 +361,18 @@
+ 
+     if (isGuidedMode && activeStep !== undefined && nodeId > activeStep) {
+       console.warn("Node locked. Please complete the spread sequentially.");
+-      // Trigger Web Audio API error sfx here later
+-      return;
+-    }
+-    
++      import('../utils/audio').then(({ vesperAudio, vesperHaptics }) => {
++        vesperHaptics.triggerWarning();
++        vesperAudio.playWarningAlarm();
++      });
++      return;
++    }
++    
++    import('../utils/audio').then(({ vesperAudio, vesperHaptics }) => {
++      vesperHaptics.triggerCardDrawn();
++      vesperAudio.playCardDraw();
++    });
++
+     // Transmit OSC
+     oscRouter.dispatchRigLookAt(nodeId, spreadId, x, y);
+ 
