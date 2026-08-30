@@ -16,15 +16,15 @@ public struct JournalDetailModalView: View {
     
     public var body: some View {
         ZStack {
-            // Semi-translucent Backdrop
-            Color.black.opacity(0.65)
+            // Solid Void Black Backdrop
+            Color.voidBlack
                 .ignoresSafeArea()
                 .onTapGesture {
                     VesperHapticEngine.shared.triggerTacticalClick()
                     onClose()
                 }
             
-            // Tactical Glass Modal Container
+            // Tactical Modal Container
             VStack(spacing: 0) {
                 // Header
                 HStack {
@@ -58,7 +58,7 @@ public struct JournalDetailModalView: View {
                 }
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
-                .background(Color.voidBlack.opacity(0.6))
+                .background(Color.voidBlack)
                 
                 Rectangle()
                     .fill(Color.magiViolet.opacity(0.35))
@@ -98,7 +98,7 @@ public struct JournalDetailModalView: View {
                                 }
                             }
                             .padding(10)
-                            .background(Color.white.opacity(0.04))
+                            .background(Color.voidBlack)
                             .border(Color.magiViolet.opacity(0.3), width: 0.8)
                             
                             // Card Inquiry Prompt
@@ -113,7 +113,7 @@ public struct JournalDetailModalView: View {
                                     .lineSpacing(2)
                             }
                             .padding(8)
-                            .background(Color.warningAmber.opacity(0.06))
+                            .background(Color.voidBlack)
                             .border(Color.warningAmber.opacity(0.4), width: 0.8)
                         } else {
                             Text(entry.cardName)
@@ -133,7 +133,7 @@ public struct JournalDetailModalView: View {
                                 .lineSpacing(2)
                                 .padding(10)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color.white.opacity(0.03))
+                                .background(Color.voidBlack)
                                 .border(Color.magiViolet.opacity(0.4), width: 0.8)
                         }
                     }
@@ -141,14 +141,8 @@ public struct JournalDetailModalView: View {
                 }
             }
             .frame(maxHeight: 520)
-            .background(
-                ZStack {
-                    Color.voidBlack.opacity(0.80)
-                    Rectangle().fill(.ultraThinMaterial.opacity(0.65))
-                }
-            )
+            .background(Color.voidBlack)
             .overlay(Rectangle().strokeBorder(Color.magiViolet, lineWidth: 1.2))
-            .shadow(color: Color.magiViolet.opacity(0.25), radius: 16)
             .padding(.horizontal, 14)
         }
     }

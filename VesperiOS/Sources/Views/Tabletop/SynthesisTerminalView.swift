@@ -29,12 +29,8 @@ public struct SynthesisTerminalView: View {
             let messageScrollHeight = max(terminalHeight - 96, 70)
             
             ZStack {
-                // 1. Fullscreen Frosted Void Black Glass Background
-                ZStack {
-                    Color.voidBlack.opacity(0.60)
-                    Rectangle().fill(.ultraThinMaterial.opacity(0.85))
-                }
-                .ignoresSafeArea()
+                // 1. Fullscreen Solid Void Black Background
+                Color.voidBlack.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
                     // ── 2. Top Navigation Header ────────────────────────
@@ -81,7 +77,7 @@ public struct SynthesisTerminalView: View {
                     }
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
-                    .background(Color.voidBlack.opacity(0.6))
+                    .background(Color.voidBlack)
                     
                     // ── 3. Top Synthesis Data Display (Upper 60%) ───────
                     ScrollView {

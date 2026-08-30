@@ -12,15 +12,15 @@ public struct RecordDetailModalView: View {
     
     public var body: some View {
         ZStack {
-            // Semi-translucent Backdrop
-            Color.black.opacity(0.65)
+            // Solid Void Black Backdrop
+            Color.voidBlack
                 .ignoresSafeArea()
                 .onTapGesture {
                     VesperHapticEngine.shared.triggerTacticalClick()
                     onClose()
                 }
             
-            // Tactical Glass Modal Container
+            // Tactical Modal Container
             VStack(spacing: 0) {
                 // Header
                 HStack {
@@ -54,7 +54,7 @@ public struct RecordDetailModalView: View {
                 }
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
-                .background(Color.voidBlack.opacity(0.6))
+                .background(Color.voidBlack)
                 
                 Rectangle()
                     .fill(Color.vesperViolet.opacity(0.4))
@@ -69,44 +69,58 @@ public struct RecordDetailModalView: View {
                                 .foregroundColor(.vesperGhost)
                             Spacer()
                             Text(record.timestamp)
-                                .font(VesperFont.telemetryTag(size: 8))
+                                .font(VesperFont.telemetryTag(size: 9))
                                 .foregroundColor(.vesperMuted)
                         }
                         
-                        if let q = record.query {
-                            Text("INQUIRY: \"\(q)\"")
-                                .font(VesperFont.terminalBody(size: 11))
-                                .foregroundColor(.vesperAmber)
-                        }
-                        
-                        Divider().background(Color.vesperMuted.opacity(0.3))
-                        
-                        Text("ASSIGNED VECTORS:")
-                            .font(VesperFont.telemetryTag(size: 8))
-                            .foregroundColor(.vesperCyan)
-                        
-                        ForEach(record.nodes.keys.sorted(), id: \.self) { k in
-                            if let cardName = record.nodes[k] {
-                                HStack {
-                                    Text("Node #\(k):")
-                                        .font(VesperFont.telemetryTag(size: 9))
-                                        .foregroundColor(.vesperMuted)
-                                    Text(cardName)
-                                        .font(VesperFont.terminalBody(size: 11))
-                                        .foregroundColor(.vesperGhost)
-                                }
+                        if let query = record.query {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("QUERY / CONTEXT:")
+                                    .font(VesperFont.telemetryTag(size: 8.5))
+                                    .foregroundColor(.vesperViolet)
+                                Text("\"\(query)\"")
+                                    .font(VesperFont.terminalBody(size: 11))
+                                    .foregroundColor(.vesperGhost)
                             }
                         }
                         
-                        if let report = record.synthesisReport {
-                            Divider().background(Color.vesperMuted.opacity(0.3))
+                        // Card Nodes
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("NODE ARCHITECTURE:")
+                                .font(VesperFont.telemetryTag(size: 8.5))
+                                .foregroundColor(.vesperViolet)
                             
-                            if let spoken = report.spokenConcise {
-                                Text("SYNTHESIS:")
-                                    .font(VesperFont.telemetryTag(size: 8))
-                                    .foregroundColor(.vesperAmber)
-                                Text("\"\(spoken)\"")
-                                    .font(VesperFont.terminalBody(size: 11))
+                            ForEach(record.nodes.sorted(by: { $0.key < $1.key }), id: \.key) { nodeId, cardName in
+                                HStack(spacing: 8) {
+                                    Text("[\(nodeId)]")
+                                        .font(VesperFont.telemetryTag(size: 8))
+                                        .foregroundColor(.vesperViolet)
+                                    Text(cardName)
+                                        .font(VesperFont.terminalHeader(size: 11))
+                                        .foregroundColor(.vesperGhost)
+                                    Spacer()
+                                    if let note = record.cardNotes?[nodeId] {
+                                        Text(note)
+                                            .font(VesperFont.terminalBody(size: 9.5))
+                                            .foregroundColor(.vesperMuted)
+                                            .lineLimit(1)
+                                    }
+                                }
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(Color.voidBlack)
+                                .border(Color.vesperViolet.opacity(0.3), width: 0.8)
+                            }
+                        }
+                        
+                        // Synthesis Extract
+                        if let synth = record.synthesisReport {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("ORACLE SYNTHESIS:")
+                                    .font(VesperFont.telemetryTag(size: 8.5))
+                                    .foregroundColor(.warningAmber)
+                                Text(synth.triadAnalysis)
+                                    .font(VesperFont.terminalBody(size: 10.5))
                                     .foregroundColor(.vesperGhost)
                             }
                         }
@@ -115,16 +129,10 @@ public struct RecordDetailModalView: View {
                 }
             }
             .frame(maxHeight: 500)
-            .background(
-                ZStack {
-                    Color.voidBlack.opacity(0.80)
-                    Rectangle().fill(.ultraThinMaterial.opacity(0.65))
-                }
-            )
+            .background(Color.voidBlack)
             .overlay(
                 Rectangle().strokeBorder(Color.vesperViolet, lineWidth: 1.2)
             )
-            .shadow(color: Color.vesperViolet.opacity(0.25), radius: 16)
             .padding(.horizontal, 14)
         }
     }

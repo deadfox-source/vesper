@@ -108,7 +108,7 @@ public struct SpreadCanvasView: View {
                             .foregroundColor(synergy.color)
                             .padding(.horizontal, 4)
                             .padding(.vertical, 2)
-                            .background(Color.voidBlack.opacity(0.85))
+                            .background(Color.voidBlack)
                             .border(synergy.color.opacity(0.6), width: 0.8)
                             .position(midP)
                     }

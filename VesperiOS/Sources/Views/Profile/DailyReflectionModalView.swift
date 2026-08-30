@@ -16,12 +16,8 @@ public struct DailyReflectionModalView: View {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Fullscreen Semi-Transparent Frosted Glass Background
-                ZStack {
-                    Color.voidBlack.opacity(0.60)
-                    Rectangle().fill(.ultraThinMaterial.opacity(0.85))
-                }
-                .ignoresSafeArea()
+                // Fullscreen Solid Void Black Background
+                Color.voidBlack.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
                     // ── Top Navigation Header ────────────────────────────
@@ -68,7 +64,7 @@ public struct DailyReflectionModalView: View {
                     }
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
-                    .background(Color.voidBlack.opacity(0.6))
+                    .background(Color.voidBlack)
                     
                     Rectangle()
                         .fill(Color.vesperViolet.opacity(0.35))
@@ -266,7 +262,7 @@ public struct DailyReflectionModalView: View {
                             .padding(.horizontal, 14)
                             .padding(.bottom, 6)
                         }
-                        .background(Color.voidBlack.opacity(0.65))
+                        .background(Color.voidBlack)
                     }
                 }
                 .frame(width: geo.size.width, height: geo.size.height)

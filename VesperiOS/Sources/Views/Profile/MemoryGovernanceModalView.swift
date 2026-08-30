@@ -19,8 +19,8 @@ public struct MemoryGovernanceModalView: View {
     
     public var body: some View {
         ZStack {
-            // Semi-transparent void black glass backdrop
-            Color.voidBlack.opacity(0.88)
+            // Solid void black backdrop
+            Color.voidBlack
                 .ignoresSafeArea()
                 .onTapGesture {
                     onClose()
@@ -326,7 +326,7 @@ public struct MemoryGovernanceModalView: View {
                 }
             }
             .frame(maxWidth: 580)
-            .background(Color.voidBlack.opacity(0.96))
+            .background(Color.voidBlack)
             .border(Color.magiViolet.opacity(0.4), width: 1)
             .padding(.horizontal, 10)
             .padding(.vertical, 16)

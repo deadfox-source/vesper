@@ -234,7 +234,7 @@ public struct TabletopView: View {
                     .foregroundColor(isSelected ? .voidBlack.opacity(0.9) : .ghostWhite.opacity(0.7))
             }
             .padding(10)
-            .background(isSelected ? Color.evaCyan : Color.voidBlack.opacity(0.8))
+            .background(isSelected ? Color.evaCyan : Color.voidBlack)
             .border(isSelected ? Color.evaCyan : Color.evaCyan.opacity(0.3), width: 1)
         }
         .buttonStyle(.plain)

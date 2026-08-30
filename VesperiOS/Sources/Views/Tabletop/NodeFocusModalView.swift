@@ -44,12 +44,8 @@ public struct NodeFocusModalView: View {
             let messageScrollHeight = max(terminalHeight - 96, 70)
             
             ZStack {
-                // Fullscreen Semi-Transparent Frosted Glass Background
-                ZStack {
-                    Color.voidBlack.opacity(0.60)
-                    Rectangle().fill(.ultraThinMaterial.opacity(0.85))
-                }
-                .ignoresSafeArea()
+                // Fullscreen Solid Void Black Background
+                Color.voidBlack.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
                     // ── Top Navigation Header ────────────────────────────
@@ -96,7 +92,7 @@ public struct NodeFocusModalView: View {
                     }
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
-                    .background(Color.voidBlack.opacity(0.6))
+                    .background(Color.voidBlack)
                     
                     Rectangle()
                         .fill(Color.evaCyan.opacity(0.35))

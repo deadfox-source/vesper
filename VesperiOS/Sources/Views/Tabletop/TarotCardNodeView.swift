@@ -133,10 +133,10 @@ public struct TarotCardNodeView: View {
                     Rectangle()
                         .fill(
                             isPopulated
-                                ? Color.voidBlack.opacity(0.95)
+                                ? Color.voidBlack
                                 : (isActiveStep
                                     ? (isAwaitingTap ? Color.magiOrange.opacity(0.12) : Color.evaCyan.opacity(0.08))
-                                    : Color.voidBlack.opacity(0.6))
+                                    : Color.voidBlack)
                         )
                     
                     // Card Border

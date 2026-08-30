@@ -113,7 +113,7 @@ public struct BootConsoleView: View {
                 .padding(.top, 10)
             }
             .padding(24)
-            .background(Color.black.opacity(0.92))
+            .background(Color.voidBlack)
             .overlay(
                 Rectangle()
                     .strokeBorder(Color.vesperViolet, lineWidth: 1)
