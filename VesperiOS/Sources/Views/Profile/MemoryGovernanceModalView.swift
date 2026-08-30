@@ -12,6 +12,11 @@ public struct MemoryGovernanceModalView: View {
     @State private var showConfirmClearMemories: Bool = false
     @State private var editingMemory: UserMemoryItem? = nil
     
+    @State private var apiKeyInput: String = VesperConfig.geminiAPIKey
+    @State private var isTestingKey: Bool = false
+    @State private var testResultStatus: String? = nil
+    @State private var isTestSuccessful: Bool = false
+    
     public init(profile: ProfileStore, onClose: @escaping () -> Void) {
         self.profile = profile
         self.onClose = onClose
@@ -79,6 +84,71 @@ public struct MemoryGovernanceModalView: View {
                 // ── Content Scroll Area ─────────────────────────────────
                 ScrollView {
                     VStack(alignment: .leading, spacing: 18) {
+                        // Section 0: Neural Uplink (Gemini API Key Governance)
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("> NEURAL UPLINK (GOOGLE GEMINI)")
+                                    .font(VesperFont.telemetryTag(size: 9))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.warningAmber)
+                                Spacer()
+                                Text("MODEL: gemini-3.6-flash")
+                                    .font(VesperFont.telemetryTag(size: 8))
+                                    .foregroundColor(.evaCyan)
+                            }
+                            
+                            Text("Enter your Gemini API Key from Google AI Studio (aistudio.google.com) to power live AI dialogue and oracle synthesis.")
+                                .font(VesperFont.terminalBody(size: 10.5))
+                                .foregroundColor(.ghostWhite.opacity(0.75))
+                            
+                            HStack(spacing: 8) {
+                                SecureField("Paste Gemini API Key", text: $apiKeyInput)
+                                    .font(VesperFont.terminalBody(size: 12))
+                                    .foregroundColor(.ghostWhite)
+                                    .padding(8)
+                                    .background(Color.voidBlack)
+                                    .border(Color.warningAmber.opacity(0.5), width: 1)
+                                
+                                Button(action: saveAndTestApiKey) {
+                                    HStack(spacing: 4) {
+                                        if isTestingKey {
+                                            ProgressView()
+                                                .scaleEffect(0.6)
+                                                .tint(.voidBlack)
+                                        }
+                                        Text(isTestingKey ? "TESTING..." : "[ SAVE & TEST ]")
+                                            .font(VesperFont.telemetryTag(size: 9))
+                                            .fontWeight(.bold)
+                                    }
+                                    .foregroundColor(.voidBlack)
+                                    .padding(.horizontal, 10)
+                                    .frame(height: 36)
+                                    .background(Color.warningAmber)
+                                    .border(Color.warningAmber, width: 1)
+                                }
+                                .buttonStyle(.plain)
+                                .disabled(isTestingKey || apiKeyInput.trimmingCharacters(in: .whitespaces).isEmpty)
+                            }
+                            
+                            if let result = testResultStatus {
+                                HStack(spacing: 6) {
+                                    Image(systemName: isTestSuccessful ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                                        .font(.system(size: 11))
+                                        .foregroundColor(isTestSuccessful ? .biosGreen : .magiOrange)
+                                    Text(result)
+                                        .font(VesperFont.terminalBody(size: 10))
+                                        .foregroundColor(isTestSuccessful ? .biosGreen : .magiOrange)
+                                }
+                                .padding(6)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(isTestSuccessful ? Color.biosGreen.opacity(0.1) : Color.magiOrange.opacity(0.1))
+                                .border(isTestSuccessful ? Color.biosGreen.opacity(0.5) : Color.magiOrange.opacity(0.5), width: 0.8)
+                            }
+                        }
+                        .padding(12)
+                        .background(Color.voidBlack)
+                        .border(Color.warningAmber.opacity(0.4), width: 1)
+                        
                         // Section 1: Operator Sovereignty Statement
                         VStack(alignment: .leading, spacing: 4) {
                             Text("> SOVEREIGNTY PROTOCOL:")
@@ -456,5 +526,37 @@ public struct MemoryGovernanceModalView: View {
         .padding(10)
         .background(cardBg)
         .border(cardBorder, width: 0.8)
+    }
+    
+    private func saveAndTestApiKey() {
+        let trimmed = apiKeyInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        
+        VesperHapticEngine.shared.triggerTacticalClick()
+        VesperConfig.geminiAPIKey = trimmed
+        isTestingKey = true
+        testResultStatus = nil
+        
+        Task {
+            do {
+                let response = try await GeminiClient.shared.sendChatMessage(
+                    history: [],
+                    userMessage: "Ping test. Respond with status.",
+                    apiKey: trimmed
+                )
+                
+                if response.text.contains("NEURAL UPLINK BLOCKED") || response.text.contains("REFUSED") {
+                    self.isTestSuccessful = false
+                    self.testResultStatus = response.text
+                } else {
+                    self.isTestSuccessful = true
+                    self.testResultStatus = "UPLINK VERIFIED: Connected to Google Gemini (gemini-3.6-flash)."
+                }
+            } catch {
+                self.isTestSuccessful = false
+                self.testResultStatus = "CONNECTION FAILED: \(error.localizedDescription)"
+            }
+            self.isTestingKey = false
+        }
     }
 }

@@ -73,8 +73,8 @@ public actor GeminiClient {
     public static let shared = GeminiClient()
     
     // Primary model identifier supported on current Gemini API v1beta
-    public static let primaryModelName = "gemini-2.5-flash"
-    public static let fallbackModelName = "gemini-2.5-flash"
+    public static let primaryModelName = "gemini-3.6-flash"
+    public static let fallbackModelName = "gemini-3.6-flash"
     
     private init() {}
     
@@ -543,9 +543,6 @@ public actor GeminiClient {
                     "contents": contents,
                     "generationConfig": [
                         "responseMimeType": "application/json",
-                        "thinkingConfig": [
-                            "thinkingBudget": 0
-                        ],
                         "responseSchema": [
                             "type": "OBJECT",
                             "properties": [
@@ -568,12 +565,30 @@ public actor GeminiClient {
                 
                 var request = URLRequest(url: url)
                 request.httpMethod = "POST"
-                request.timeoutInterval = 8.0
+                request.timeoutInterval = 10.0
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
                 
                 let (data, response) = try await URLSession.shared.data(for: request)
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                if httpResponse.statusCode != 200 {
+                    let errJson = (try? JSONSerialization.jsonObject(with: data) as? [String: Any])?["error"] as? [String: Any]
+                    let errMsg = errJson?["message"] as? String ?? "HTTP \(httpResponse.statusCode)"
+                    print("⚠️ Google Gemini API returned status \(httpResponse.statusCode): \(errMsg)")
+                    
+                    if httpResponse.statusCode == 403 || httpResponse.statusCode == 400 || httpResponse.statusCode == 401 {
+                        if errMsg.lowercased().contains("leaked") || errMsg.lowercased().contains("api key") || errMsg.lowercased().contains("permission_denied") {
+                            return VesperAIResponse(
+                                type: "reply",
+                                text: "NEURAL UPLINK BLOCKED: Google API rejected the API key (\(errMsg)). Please configure a fresh Gemini API Key in the Memory & Privacy Vault to restore live intelligence.",
+                                emotion: .embarrassment,
+                                options: ["Configure API Key", "Retry Connection", "Request Tarot Spread"]
+                            )
+                        }
+                    }
                     throw URLError(.badServerResponse)
                 }
                 
