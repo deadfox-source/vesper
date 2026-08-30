@@ -187,6 +187,7 @@ public struct SynthesisTerminalView: View {
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
                     }
+                    .scrollDismissesKeyboard(.interactively)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     
                     // ── 4. Bottom Guided Terminal Window (Anchored Flush at 40%) ─
@@ -230,6 +231,7 @@ public struct SynthesisTerminalView: View {
                                     }
                                     .padding(8)
                                 }
+                                .scrollDismissesKeyboard(.interactively)
                                 .frame(height: messageScrollHeight)
                                 .onChange(of: messages.count) { _, _ in
                                     if let lastId = messages.last?.id {

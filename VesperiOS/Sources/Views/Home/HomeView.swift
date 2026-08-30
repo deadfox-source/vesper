@@ -135,6 +135,7 @@ public struct HomeView: View {
                                 }
                                 .padding(8)
                             }
+                            .scrollDismissesKeyboard(.interactively)
                             .frame(height: messageScrollHeight)
                             .onChange(of: vesper.messages.count) { _, _ in
                                 if let lastId = vesper.messages.last?.id {

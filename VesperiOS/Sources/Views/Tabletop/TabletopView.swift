@@ -347,6 +347,7 @@ public struct TabletopView: View {
                                 }
                                 .padding(8)
                             }
+                            .scrollDismissesKeyboard(.interactively)
                             .frame(height: messageScrollHeight)
                             .onChange(of: board.readingMessages.count) { _, _ in
                                 if let lastId = board.readingMessages.last?.id {

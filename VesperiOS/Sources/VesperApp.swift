@@ -1,5 +1,8 @@
 // Sources/VesperApp.swift
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 #if !canImport(XCTest)
 @main
@@ -75,13 +78,27 @@ public struct VesperRootView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     
-                    // Ergonomic Thumb-Zone Bottom DOS Tab Bar
-                    TabBarView()
+                    // Ergonomic Thumb-Zone Bottom DOS Tab Bar (hidden when keyboard is active)
+                    if !isKeyboardVisible {
+                        TabBarView()
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
                 }
-                .ignoresSafeArea(edges: .bottom)
+                .ignoresSafeArea(.container, edges: .bottom)
+                .animation(.easeInOut(duration: 0.25), value: isKeyboardVisible)
+                #if canImport(UIKit)
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                    isKeyboardVisible = true
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                    isKeyboardVisible = false
+                }
+                #endif
             }
         }
     }
+    
+    @State private var isKeyboardVisible: Bool = false
     
     private func currentTickerColor() -> Color {
         switch nav.currentScreen {

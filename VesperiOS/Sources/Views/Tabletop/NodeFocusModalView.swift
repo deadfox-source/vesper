@@ -103,78 +103,80 @@ public struct NodeFocusModalView: View {
                         .frame(height: 1)
                         .accessibilityHidden(true)
                     
-                    // ── Card Codex Upper Content (Adaptive Top Area) ──────
-                    VStack(spacing: 4) {
-                        // Section 1: Tactical Node Header
-                        HStack {
-                            Text("NODE #\(node.id):")
-                                .font(VesperFont.telemetryTag(size: 9))
-                                .foregroundColor(.evaCyan)
-                            Text(node.title.uppercased())
-                                .font(VesperFont.terminalHeader(size: 11))
-                                .foregroundColor(.magiOrange)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        
-                        if let c = card {
-                            // Section 2: Ascii Card Art
-                            VesperAsciiCardView(
-                                cardName: c.name,
-                                element: c.element,
-                                accentColor: elementColor(c.element),
-                                cardHeight: min(geo.size.height * 0.22, 150),
-                                fontSize: 7.2
-                            )
-                            .padding(.vertical, 1)
-                            
-                            // Section 3: Card Information Text
-                            HStack(alignment: .center, spacing: 8) {
-                                Text(c.name.uppercased())
-                                    .font(VesperFont.bannerLarge(size: 13.5))
-                                    .fontWeight(.bold)
+                    // ── Card Codex Upper Content (Scrollable Top Area) ──────
+                    ScrollView {
+                        VStack(spacing: 4) {
+                            // Section 1: Tactical Node Header
+                            HStack {
+                                Text("NODE #\(node.id):")
+                                    .font(VesperFont.telemetryTag(size: 9))
                                     .foregroundColor(.evaCyan)
-                                
+                                Text(node.title.uppercased())
+                                    .font(VesperFont.terminalHeader(size: 11))
+                                    .foregroundColor(.magiOrange)
                                 Spacer()
-                                
-                                HStack(spacing: 6) {
-                                    Text("[\(c.element.rawValue.uppercased())]")
-                                        .font(VesperFont.terminalHeader(size: 8.5))
-                                        .foregroundColor(elementColor(c.element))
-                                        .padding(.horizontal, 4)
-                                        .frame(height: 20)
-                                        .border(elementColor(c.element), width: 0.8)
-                                    
-                                    Text("[ \(c.element.platonicSolid.uppercased()) ]")
-                                        .font(VesperFont.telemetryTag(size: 8))
-                                        .foregroundColor(.biosGreen)
-                                }
                             }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
                             
-                            // Section 4: Tactical Interpretation (Inline)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text("> TACTICAL INTERPRETATION:")
-                                    .font(VesperFont.telemetryTag(size: 7.5))
-                                    .foregroundColor(.ghostWhite.opacity(0.6))
-                                Text(c.meaning)
-                                    .font(VesperFont.terminalBody(size: 10))
-                                    .foregroundColor(.ghostWhite)
-                                    .lineLimit(2)
-                                    .fixedSize(horizontal: false, vertical: true)
+                            if let c = card {
+                                // Section 2: Ascii Card Art
+                                VesperAsciiCardView(
+                                    cardName: c.name,
+                                    element: c.element,
+                                    accentColor: elementColor(c.element),
+                                    cardHeight: min(geo.size.height * 0.22, 150),
+                                    fontSize: 7.2
+                                )
+                                .padding(.vertical, 1)
+                                
+                                // Section 3: Card Information Text
+                                HStack(alignment: .center, spacing: 8) {
+                                    Text(c.name.uppercased())
+                                        .font(VesperFont.bannerLarge(size: 13.5))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.evaCyan)
+                                    
+                                    Spacer()
+                                    
+                                    HStack(spacing: 6) {
+                                        Text("[\(c.element.rawValue.uppercased())]")
+                                            .font(VesperFont.terminalHeader(size: 8.5))
+                                            .foregroundColor(elementColor(c.element))
+                                            .padding(.horizontal, 4)
+                                            .frame(height: 20)
+                                            .border(elementColor(c.element), width: 0.8)
+                                        
+                                        Text("[ \(c.element.platonicSolid.uppercased()) ]")
+                                            .font(VesperFont.telemetryTag(size: 8))
+                                            .foregroundColor(.biosGreen)
+                                    }
+                                }
+                                
+                                // Section 4: Tactical Interpretation (Inline)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text("> TACTICAL INTERPRETATION:")
+                                        .font(VesperFont.telemetryTag(size: 7.5))
+                                        .foregroundColor(.ghostWhite.opacity(0.6))
+                                    Text(c.meaning)
+                                        .font(VesperFont.terminalBody(size: 10))
+                                        .foregroundColor(.ghostWhite)
+                                        .lineLimit(2)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            } else {
+                                Text("No card currently assigned to this node.")
+                                    .font(VesperFont.terminalBody(size: 11))
+                                    .foregroundColor(.ghostWhite.opacity(0.5))
+                                    .padding(12)
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        } else {
-                            Text("No card currently assigned to this node.")
-                                .font(VesperFont.terminalBody(size: 11))
-                                .foregroundColor(.ghostWhite.opacity(0.5))
-                                .padding(12)
                         }
+                        .padding(.horizontal, 10)
+                        .padding(.top, 4)
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.top, 4)
-                    
-                    Spacer(minLength: 0)
+                    .scrollDismissesKeyboard(.interactively)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     
                     // ── Lower Pinned Card Terminal Frame (Anchored at Bottom 40%) ──
                     if let _ = card {
@@ -219,6 +221,7 @@ public struct NodeFocusModalView: View {
                                         }
                                         .padding(8)
                                     }
+                                    .scrollDismissesKeyboard(.interactively)
                                     .frame(height: messageScrollHeight)
                                     .onChange(of: cardMessages.count) { _, _ in
                                         if let lastId = cardMessages.last?.id {

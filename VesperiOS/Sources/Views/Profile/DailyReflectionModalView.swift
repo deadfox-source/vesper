@@ -75,120 +75,122 @@ public struct DailyReflectionModalView: View {
                         .frame(height: 1)
                         .accessibilityHidden(true)
                     
-                    // ── Main Single-View Content (Adaptive Top Area) ──────
-                    VStack(spacing: 4) {
-                        // Section 1: Tactical Diagnostic Header
-                        HStack {
-                            Text("DIAGNOSTIC VECTOR:")
-                                .font(VesperFont.telemetryTag(size: 9))
-                                .foregroundColor(.vesperViolet)
-                            Text("DAILY ARCHETYPE PROTOCOL")
-                                .font(VesperFont.terminalHeader(size: 11))
-                                .foregroundColor(.magiOrange)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        
-                        if let card = drawnCard {
-                            // Section 2: Ascii Card Art
-                            VesperAsciiCardView(
-                                cardName: card.name,
-                                element: card.element,
-                                accentColor: elementColor(card.element),
-                                cardHeight: min(geo.size.height * 0.22, 155),
-                                fontSize: 7.6
-                            )
-                            .padding(.vertical, 1)
-                            
-                            // Section 3: Card Information Text on Window
-                            HStack(alignment: .center, spacing: 8) {
-                                Text(card.name.uppercased())
-                                    .font(VesperFont.bannerLarge(size: 14))
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.vesperGhost)
-                                
-                                Spacer()
-                                
-                                HStack(spacing: 6) {
-                                    Text("[\(card.element.rawValue.uppercased())]")
-                                        .font(VesperFont.terminalHeader(size: 9))
-                                        .foregroundColor(elementColor(card.element))
-                                        .padding(.horizontal, 5)
-                                        .frame(height: 20)
-                                        .border(elementColor(card.element), width: 0.8)
-                                    
-                                    Text("[ \(card.element.platonicSolid.uppercased()) ]")
-                                        .font(VesperFont.telemetryTag(size: 8))
-                                        .foregroundColor(.biosGreen)
-                                }
-                            }
-                            
-                            // Section 4: Tactical Interpretation (Inline)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text("> TACTICAL INTERPRETATION:")
-                                    .font(VesperFont.telemetryTag(size: 7.5))
-                                    .foregroundColor(.ghostWhite.opacity(0.6))
-                                Text(card.meaning)
-                                    .font(VesperFont.terminalBody(size: 10.5))
-                                    .foregroundColor(.ghostWhite)
-                                    .lineLimit(2)
-                                    .fixedSize(horizontal: false, vertical: true)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            // Section 5: Vesper's Inquiry Prompt (Inline)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text("> VESPER INQUIRY PROMPT:")
-                                    .font(VesperFont.telemetryTag(size: 8))
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.vesperAmber)
-                                
-                                Text(card.reflectionPrompt)
-                                    .font(VesperFont.terminalBody(size: 10.5))
-                                    .foregroundColor(.vesperAmber)
-                                    .lineLimit(2)
-                                    .fixedSize(horizontal: false, vertical: true)
-                            }
-                        } else {
-                            // Card Draw Trigger
-                            VStack(spacing: 14) {
-                                Text("INITIALIZE DAILY PSYCHO-DIAGNOSTIC")
-                                    .font(VesperFont.terminalBody(size: 11))
-                                    .foregroundColor(.vesperMuted)
-                                
-                                Button(action: {
-                                    drawnCard = TarotDeck.cards.randomElement()
-                                    VesperHapticEngine.shared.triggerCardDrawn()
-                                    VesperSoundEffects.shared.playCardDraw()
-                                }) {
-                                    HStack(spacing: 8) {
-                                        Image(systemName: "sparkles")
-                                            .accessibilityHidden(true)
-                                        Text("[ DRAW DAILY ARCHETYPE ]")
-                                    }
-                                    .font(VesperFont.terminalHeader(size: 11))
+                    // ── Main Single-View Content (Scrollable Top Area) ──────
+                    ScrollView {
+                        VStack(spacing: 4) {
+                            // Section 1: Tactical Diagnostic Header
+                            HStack {
+                                Text("DIAGNOSTIC VECTOR:")
+                                    .font(VesperFont.telemetryTag(size: 9))
                                     .foregroundColor(.vesperViolet)
-                                    .padding(.horizontal, 16)
-                                    .frame(height: 36)
-                                    .background(Color.vesperViolet.opacity(0.12))
-                                    .overlay(
-                                        Rectangle().strokeBorder(Color.vesperViolet, lineWidth: 1.2)
-                                    )
-                                }
-                                .buttonStyle(.plain)
-                                .accessibilityLabel("Draw Daily Archetype Card")
-                                .accessibilityHint("Draws a random archetype card for reflection")
-                                .accessibilityAddTraits(.isButton)
+                                Text("DAILY ARCHETYPE PROTOCOL")
+                                    .font(VesperFont.terminalHeader(size: 11))
+                                    .foregroundColor(.magiOrange)
+                                Spacer()
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 40)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            
+                            if let card = drawnCard {
+                                // Section 2: Ascii Card Art
+                                VesperAsciiCardView(
+                                    cardName: card.name,
+                                    element: card.element,
+                                    accentColor: elementColor(card.element),
+                                    cardHeight: min(geo.size.height * 0.22, 155),
+                                    fontSize: 7.6
+                                )
+                                .padding(.vertical, 1)
+                                
+                                // Section 3: Card Information Text on Window
+                                HStack(alignment: .center, spacing: 8) {
+                                    Text(card.name.uppercased())
+                                        .font(VesperFont.bannerLarge(size: 14))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.vesperGhost)
+                                    
+                                    Spacer()
+                                    
+                                    HStack(spacing: 6) {
+                                        Text("[\(card.element.rawValue.uppercased())]")
+                                            .font(VesperFont.terminalHeader(size: 9))
+                                            .foregroundColor(elementColor(card.element))
+                                            .padding(.horizontal, 5)
+                                            .frame(height: 20)
+                                            .border(elementColor(card.element), width: 0.8)
+                                        
+                                        Text("[ \(card.element.platonicSolid.uppercased()) ]")
+                                            .font(VesperFont.telemetryTag(size: 8))
+                                            .foregroundColor(.biosGreen)
+                                    }
+                                }
+                                
+                                // Section 4: Tactical Interpretation (Inline)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text("> TACTICAL INTERPRETATION:")
+                                        .font(VesperFont.telemetryTag(size: 7.5))
+                                        .foregroundColor(.ghostWhite.opacity(0.6))
+                                    Text(card.meaning)
+                                        .font(VesperFont.terminalBody(size: 10.5))
+                                        .foregroundColor(.ghostWhite)
+                                        .lineLimit(2)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                // Section 5: Vesper's Inquiry Prompt (Inline)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text("> VESPER INQUIRY PROMPT:")
+                                        .font(VesperFont.telemetryTag(size: 8))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.vesperAmber)
+                                    
+                                    Text(card.reflectionPrompt)
+                                        .font(VesperFont.terminalBody(size: 10.5))
+                                        .foregroundColor(.vesperAmber)
+                                        .lineLimit(2)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                            } else {
+                                // Card Draw Trigger
+                                VStack(spacing: 14) {
+                                    Text("INITIALIZE DAILY PSYCHO-DIAGNOSTIC")
+                                        .font(VesperFont.terminalBody(size: 11))
+                                        .foregroundColor(.vesperMuted)
+                                    
+                                    Button(action: {
+                                        drawnCard = TarotDeck.cards.randomElement()
+                                        VesperHapticEngine.shared.triggerCardDrawn()
+                                        VesperSoundEffects.shared.playCardDraw()
+                                    }) {
+                                        HStack(spacing: 8) {
+                                            Image(systemName: "sparkles")
+                                                .accessibilityHidden(true)
+                                            Text("[ DRAW DAILY ARCHETYPE ]")
+                                        }
+                                        .font(VesperFont.terminalHeader(size: 11))
+                                        .foregroundColor(.vesperViolet)
+                                        .padding(.horizontal, 16)
+                                        .frame(height: 36)
+                                        .background(Color.vesperViolet.opacity(0.12))
+                                        .overlay(
+                                            Rectangle().strokeBorder(Color.vesperViolet, lineWidth: 1.2)
+                                        )
+                                    }
+                                    .buttonStyle(.plain)
+                                    .accessibilityLabel("Draw Daily Archetype Card")
+                                    .accessibilityHint("Draws a random archetype card for reflection")
+                                    .accessibilityAddTraits(.isButton)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 40)
+                            }
                         }
+                        .padding(.horizontal, 10)
+                        .padding(.top, 4)
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.top, 4)
-                    
-                    Spacer(minLength: 0)
+                    .scrollDismissesKeyboard(.interactively)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     
                     // ── Anchored Sticky Bottom Reflection Input Dock (Thumb Zone) ──
                     if let card = drawnCard {
