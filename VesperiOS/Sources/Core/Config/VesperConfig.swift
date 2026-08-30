@@ -8,10 +8,10 @@ public struct VesperConfig {
             if let saved = saved?.trimmingCharacters(in: .whitespacesAndNewlines), !saved.isEmpty {
                 return saved
             }
-            return "AIzaSyAKnUxvKHgfp9x2om3Jin9GL033iNRLf3Q"
+            return ""
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "VESPER_GEMINI_API_KEY")
+            UserDefaults.standard.set(newValue.trimmingCharacters(in: .whitespacesAndNewlines), forKey: "VESPER_GEMINI_API_KEY")
         }
     }
     

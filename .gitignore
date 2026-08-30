@@ -15,9 +15,17 @@ dist-ssr
 
 # Environment variables & secrets
 .env
+.env.*
+*.env
 .env.local
 .env.*.local
-*.env
+.env.development
+.env.production
+*.pem
+*.key
+*.p12
+*.cer
+*.mobileprovision
 
 # Swift / Xcode build artifacts
 .build/
