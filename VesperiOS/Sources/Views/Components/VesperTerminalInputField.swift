@@ -148,35 +148,6 @@ public struct VesperTerminalInputField: View {
             .frame(height: isAxisVertical ? nil : 44)
             .frame(minHeight: 44)
             .background(Color.voidBlack)
-            #if canImport(UIKit)
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    HStack {
-                        Text("OPERATOR BUFFER")
-                            .font(VesperFont.telemetryTag(size: 9))
-                            .foregroundColor(.ghostWhite.opacity(0.5))
-                        
-                        Spacer()
-                        
-                        Button(action: minimizeKeyboard) {
-                            HStack(spacing: 4) {
-                                Image(systemName: "keyboard.chevron.compact.down")
-                                    .font(.system(size: 11, weight: .bold))
-                                Text("[ HIDE KEYBOARD ]")
-                                    .font(VesperFont.telemetryTag(size: 9.5))
-                                    .fontWeight(.bold)
-                            }
-                            .foregroundColor(.warningAmber)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.voidBlack)
-                            .border(Color.warningAmber.opacity(0.6), width: 1)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
-            #endif
         }
     }
     
