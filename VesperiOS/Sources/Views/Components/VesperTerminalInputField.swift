@@ -96,33 +96,51 @@ public struct VesperTerminalInputField: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
                 if showTrailingAction {
-                    if !text.trimmingCharacters(in: .whitespaces).isEmpty {
-                        Button(action: submit) {
-                            Image(systemName: "arrow.up.circle.fill")
-                                .font(.system(size: 22))
-                                .foregroundColor(accentColor == .vesperBlue ? .magiOrange : accentColor)
-                                .frame(minWidth: 44, minHeight: 44)
-                                .contentShape(Rectangle())
+                    HStack(spacing: 6) {
+                        if isFocused {
+                            Button(action: minimizeKeyboard) {
+                                Image(systemName: "keyboard.chevron.compact.down")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.ghostWhite.opacity(0.8))
+                                    .frame(width: 32, height: 32)
+                                    .background(Color.voidBlack)
+                                    .border(Color.ghostWhite.opacity(0.3), width: 1)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Minimize keyboard")
+                            .accessibilityHint("Dismisses the on-screen keyboard")
+                            .accessibilityAddTraits(.isButton)
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("Submit input")
-                        .accessibilityHint("Submits text input")
-                        .accessibilityAddTraits(.isButton)
-                    } else {
-                        Button(action: toggleSpeechDictation) {
-                            Image(systemName: recognizer.isRecording ? "mic.fill" : "mic")
-                                .font(.system(size: 18))
-                                .foregroundColor(recognizer.isRecording ? .magiOrange : accentColor)
-                                .padding(8)
-                                .background(recognizer.isRecording ? Color.magiOrange.opacity(0.2) : Color.clear)
-                                .clipShape(Circle())
-                                .frame(minWidth: 44, minHeight: 44)
-                                .contentShape(Rectangle())
+                        
+                        if !text.trimmingCharacters(in: .whitespaces).isEmpty {
+                            Button(action: submit) {
+                                Image(systemName: "arrow.up.circle.fill")
+                                    .font(.system(size: 22))
+                                    .foregroundColor(accentColor == .vesperBlue ? .magiOrange : accentColor)
+                                    .frame(minWidth: 36, minHeight: 36)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Submit input")
+                            .accessibilityHint("Submits text input")
+                            .accessibilityAddTraits(.isButton)
+                        } else {
+                            Button(action: toggleSpeechDictation) {
+                                Image(systemName: recognizer.isRecording ? "mic.fill" : "mic")
+                                    .font(.system(size: 18))
+                                    .foregroundColor(recognizer.isRecording ? .magiOrange : accentColor)
+                                    .padding(6)
+                                    .background(recognizer.isRecording ? Color.magiOrange.opacity(0.2) : Color.clear)
+                                    .clipShape(Circle())
+                                    .frame(minWidth: 36, minHeight: 36)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(recognizer.isRecording ? "Stop voice dictation" : "Start voice dictation")
+                            .accessibilityHint("Transcribes voice to text")
+                            .accessibilityAddTraits(.isButton)
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(recognizer.isRecording ? "Stop voice dictation" : "Start voice dictation")
-                        .accessibilityHint("Transcribes voice to text")
-                        .accessibilityAddTraits(.isButton)
                     }
                 }
             }
@@ -130,7 +148,44 @@ public struct VesperTerminalInputField: View {
             .frame(height: isAxisVertical ? nil : 44)
             .frame(minHeight: 44)
             .background(Color.voidBlack)
+            #if canImport(UIKit)
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    HStack {
+                        Text("OPERATOR BUFFER")
+                            .font(VesperFont.telemetryTag(size: 9))
+                            .foregroundColor(.ghostWhite.opacity(0.5))
+                        
+                        Spacer()
+                        
+                        Button(action: minimizeKeyboard) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "keyboard.chevron.compact.down")
+                                    .font(.system(size: 11, weight: .bold))
+                                Text("[ HIDE KEYBOARD ]")
+                                    .font(VesperFont.telemetryTag(size: 9.5))
+                                    .fontWeight(.bold)
+                            }
+                            .foregroundColor(.warningAmber)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.voidBlack)
+                            .border(Color.warningAmber.opacity(0.6), width: 1)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+            #endif
         }
+    }
+    
+    private func minimizeKeyboard() {
+        VesperHapticEngine.shared.triggerTacticalClick()
+        isFocused = false
+        #if canImport(UIKit)
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        #endif
     }
     
     private func submit() {
