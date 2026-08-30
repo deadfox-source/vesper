@@ -4,6 +4,9 @@ import Combine
 #if canImport(UIKit)
 import UIKit
 #endif
+#if canImport(CoreMotion)
+import CoreMotion
+#endif
 
 @MainActor
 public final class TelemetryStore: ObservableObject {
@@ -15,18 +18,65 @@ public final class TelemetryStore: ObservableObject {
     @Published public private(set) var cpuCores: Int = ProcessInfo.processInfo.processorCount
     @Published public private(set) var systemTimeText: String = ""
     
+    // CoreMotion Gyroscopic Telemetry
+    @Published public private(set) var motionPitch: Double = 0.0
+    @Published public private(set) var motionRoll: Double = 0.0
+    @Published public private(set) var motionYaw: Double = 0.0
+    @Published public private(set) var shakeGlitchTrigger: Int = 0
+    @Published public var tapPulseTrigger: Int = 0
+    
+    #if os(iOS) && canImport(CoreMotion)
+    private var motionManager: CMMotionManager?
+    #endif
+    
     private var cancellables = Set<AnyCancellable>()
     private var clockTimer: Timer?
     
     public init() {
         setupBatteryMonitoring()
         setupLocationTracking()
+        setupMotionTracking()
         startClockTicker()
         fetchInitialTelemetry()
     }
     
     deinit {
         clockTimer?.invalidate()
+        #if os(iOS) && canImport(CoreMotion)
+        motionManager?.stopDeviceMotionUpdates()
+        #endif
+    }
+    
+    public func triggerVesperTap() {
+        tapPulseTrigger += 1
+    }
+    
+    private func setupMotionTracking() {
+        #if os(iOS) && canImport(CoreMotion)
+        let manager = CMMotionManager()
+        if manager.isDeviceMotionAvailable {
+            manager.deviceMotionUpdateInterval = 1.0 / 60.0
+            manager.startDeviceMotionUpdates(to: .main) { [weak self] motion, error in
+                guard let self = self, let motion = motion else { return }
+                let pitch = motion.attitude.pitch
+                let roll = motion.attitude.roll
+                let yaw = motion.attitude.yaw
+                
+                // Smooth low-pass filter (80% previous + 20% new)
+                self.motionPitch = self.motionPitch * 0.8 + pitch * 0.2
+                self.motionRoll = self.motionRoll * 0.8 + roll * 0.2
+                self.motionYaw = self.motionYaw * 0.8 + yaw * 0.2
+                
+                // Sudden G-Force Spike / Shake detection
+                let userAccel = motion.userAcceleration
+                let totalG = sqrt(userAccel.x * userAccel.x + userAccel.y * userAccel.y + userAccel.z * userAccel.z)
+                if totalG > 2.2 {
+                    self.shakeGlitchTrigger += 1
+                }
+            }
+            self.motionManager = manager
+        }
+        #endif
     }
     
     private func setupBatteryMonitoring() {

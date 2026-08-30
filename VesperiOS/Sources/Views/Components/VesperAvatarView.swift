@@ -28,6 +28,10 @@ public struct VesperAvatarView: PlatformViewRepresentable {
     public var kpIndex: Double
     public var temperature: Double
     public var isOnline: Bool
+    public var motionPitch: Double
+    public var motionRoll: Double
+    public var motionYaw: Double
+    public var tapTrigger: Int
 
     public init(
         isSpeaking: Bool = false,
@@ -38,7 +42,11 @@ public struct VesperAvatarView: PlatformViewRepresentable {
         isCharging: Bool = false,
         kpIndex: Double = 2.33,
         temperature: Double = 22.0,
-        isOnline: Bool = true
+        isOnline: Bool = true,
+        motionPitch: Double = 0.0,
+        motionRoll: Double = 0.0,
+        motionYaw: Double = 0.0,
+        tapTrigger: Int = 0
     ) {
         self.isSpeaking = isSpeaking
         self.isListening = isListening
@@ -49,6 +57,10 @@ public struct VesperAvatarView: PlatformViewRepresentable {
         self.kpIndex = kpIndex
         self.temperature = temperature
         self.isOnline = isOnline
+        self.motionPitch = motionPitch
+        self.motionRoll = motionRoll
+        self.motionYaw = motionYaw
+        self.tapTrigger = tapTrigger
     }
 
     public func makeCoordinator() -> Coordinator {
@@ -372,6 +384,8 @@ public struct VesperAvatarView: PlatformViewRepresentable {
         var currentRippleInnerAlpha: Float = 0.0
         var currentRippleOuterAlpha: Float = 0.0
         var lastTime: TimeInterval = 0
+        var lastTapTrigger: Int = 0
+        var tapShockwaveProgress: SCNFloat = 0.0
 
         init(_ parent: VesperAvatarView) {
             self.parent = parent
@@ -391,11 +405,26 @@ public struct VesperAvatarView: PlatformViewRepresentable {
             let dt = SCNFloat(min(time - lastTime, 1.0 / 30.0))
             lastTime = time
 
+            // Process Tap Shockwave Pulse
+            if parent.tapTrigger > lastTapTrigger {
+                tapShockwaveProgress = 1.0
+                lastTapTrigger = parent.tapTrigger
+            }
+            if tapShockwaveProgress > 0 {
+                tapShockwaveProgress = max(0, tapShockwaveProgress - dt * 2.2)
+            }
+
             let mode = parent.isSpeaking ? "ACTIVE" : (parent.isListening ? "THINKING" : "IDLE")
             let baseSpeed: SCNFloat = mode == "THINKING" ? 2.0 : (mode == "ACTIVE" ? 0.6 : 0.25)
             let volume = SCNFloat(parent.audioLevel)
             let activeJitter: SCNFloat = mode == "ACTIVE" ? (volume * 0.08) : 0.0
             let t = SCNFloat(time)
+
+            // 0. Gyroscopic Phone Motion Tilt (CoreMotion Parallax)
+            let targetTiltPitch = SCNFloat(parent.motionPitch) * 0.40
+            let targetTiltRoll = SCNFloat(parent.motionRoll) * 0.40
+            containerNode.eulerAngles.x = targetTiltPitch
+            containerNode.eulerAngles.z = -targetTiltRoll
 
             // 1. Float Physics (Bobbing & Floating Range [-0.15, 0.15])
             let floatSpeed: SCNFloat = mode == "IDLE" ? 1.5 : 3.5
@@ -410,41 +439,43 @@ public struct VesperAvatarView: PlatformViewRepresentable {
 
             // 2. Shell Rotation & Wave Modulation
             shellNode.eulerAngles.x = sin(t * 0.5) * 0.1
-            shellNode.eulerAngles.y += dt * baseSpeed * 0.2
+            shellNode.eulerAngles.y += dt * (baseSpeed * 0.2 + tapShockwaveProgress * 2.0)
             shellNode.eulerAngles.z = cos(t * 0.3) * 0.05 + activeJitter
 
-            // 3. Counter-Rotating Core & Ripples
-            coreNode.eulerAngles.y -= dt * (baseSpeed * 1.5)
+            // 3. Counter-Rotating Core & Ripples (Surges on Tap)
+            coreNode.eulerAngles.y -= dt * (baseSpeed * 1.5 + tapShockwaveProgress * 12.0)
             innerRippleNode.eulerAngles.x += dt * 0.25
             innerRippleNode.eulerAngles.y += dt * 0.25
             outerRippleNode.eulerAngles.z -= dt * 0.4
 
-            // 4. Volume-Driven Smooth Scaling
-            let targetScale: SCNFloat = 1.0 + (volume * 0.42)
+            // 4. Volume-Driven Smooth Scaling & Tap Pulse Expansion
+            let targetScale: SCNFloat = 1.0 + (volume * 0.42) + (tapShockwaveProgress * 0.35)
             currentScale += (targetScale - currentScale) * 0.15
             let s = currentScale
             shellNode.scale = SCNVector3(s, s, s)
             coreNode.scale = SCNVector3(s * 0.5, s * 0.5, s * 0.5)
 
-            // 5. Core Emission Pulse
+            // 5. Core Emission Pulse & Tap Flare
             if let coreMat = coreNode.geometry?.materials.first {
                 let baseIntensity: CGFloat = 2.0
                 let speechPulse = CGFloat(parent.audioLevel * 3.0)
-                coreMat.emission.intensity = baseIntensity + speechPulse
+                let tapFlare = CGFloat(tapShockwaveProgress * 8.0)
+                coreMat.emission.intensity = baseIntensity + speechPulse + tapFlare
             }
 
             // 6. Frequency Ripple Expansions
-            let targetInnerScale: SCNFloat = 1.6 + (volume * 0.45)
+            let tapExpand = tapShockwaveProgress * 0.9
+            let targetInnerScale: SCNFloat = 1.6 + (volume * 0.45) + tapExpand
             innerRippleNode.scale = SCNVector3(targetInnerScale, targetInnerScale, targetInnerScale)
-            let targetInnerAlpha = parent.audioLevel * 0.65
+            let targetInnerAlpha = max(parent.audioLevel * 0.65, Float(tapShockwaveProgress * 0.9))
             currentRippleInnerAlpha += (targetInnerAlpha - currentRippleInnerAlpha) * 0.2
             if let innerMat = innerRippleNode.geometry?.materials.first {
                 innerMat.transparency = CGFloat(currentRippleInnerAlpha)
             }
 
-            let targetOuterScale: SCNFloat = 1.8 + (volume * 0.65)
+            let targetOuterScale: SCNFloat = 1.8 + (volume * 0.65) + tapExpand * 1.3
             outerRippleNode.scale = SCNVector3(targetOuterScale, targetOuterScale, targetOuterScale)
-            let targetOuterAlpha = parent.audioLevel * 0.85
+            let targetOuterAlpha = max(parent.audioLevel * 0.85, Float(tapShockwaveProgress * 0.75))
             currentRippleOuterAlpha += (targetOuterAlpha - currentRippleOuterAlpha) * 0.2
             if let outerMat = outerRippleNode.geometry?.materials.first {
                 outerMat.transparency = CGFloat(currentRippleOuterAlpha)

@@ -345,5 +345,34 @@ final class VesperCoreTests: XCTestCase {
         XCTAssertFalse(reply.isEmpty)
         XCTAssertFalse(reply.hasPrefix("{"))
     }
+    
+    @MainActor
+    func testTelemetryMotionAndTapTriggers() {
+        let telemetry = TelemetryStore()
+        XCTAssertEqual(telemetry.tapPulseTrigger, 0)
+        XCTAssertEqual(telemetry.shakeGlitchTrigger, 0)
+        
+        telemetry.triggerVesperTap()
+        XCTAssertEqual(telemetry.tapPulseTrigger, 1)
+        
+        telemetry.triggerVesperTap()
+        XCTAssertEqual(telemetry.tapPulseTrigger, 2)
+    }
+    
+    @MainActor
+    func testVesperTapPresencePing() {
+        let vesper = VesperStore()
+        let initialCount = vesper.messages.count
+        
+        vesper.pingOperatorPresence()
+        XCTAssertEqual(vesper.messages.count, initialCount + 1)
+        
+        let lastMsg = vesper.messages.last
+        XCTAssertNotNil(lastMsg)
+        XCTAssertEqual(lastMsg?.role, .vesper)
+        XCTAssertTrue(lastMsg?.text.contains("TACTILE LINK") == true)
+        XCTAssertNotNil(lastMsg?.options)
+        XCTAssertFalse(lastMsg?.options?.isEmpty ?? true)
+    }
 }
 

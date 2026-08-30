@@ -96,8 +96,38 @@ public struct HomeView: View {
                     )
                 )
                 
-                // 2. Center Viewport Area (Exposing global 3D avatar & pet)
-                Spacer()
+                // 2. Center Viewport Area with Interactive Vesper Touch Target
+                ZStack {
+                    // Transparent hit target spanning the central 3D thoughtform area
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            telemetry.triggerVesperTap()
+                            vesper.pingOperatorPresence()
+                        }
+                    
+                    // Subtle telemetry targeting prompt indicator
+                    VStack {
+                        Spacer()
+                        HStack(spacing: 6) {
+                            Text("▲")
+                                .font(.system(size: 7))
+                                .foregroundColor(.evaCyan.opacity(0.4))
+                            Text("[ TAP ENTITY FOR RESONANCE SYNC ]")
+                                .font(VesperFont.telemetryTag(size: 8))
+                                .foregroundColor(.ghostWhite.opacity(0.35))
+                            Text("▲")
+                                .font(.system(size: 7))
+                                .foregroundColor(.evaCyan.opacity(0.4))
+                        }
+                        .padding(.bottom, 6)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Vesper Consciousness Entity")
+                .accessibilityHint("Double tap to ping Vesper and initiate tactile resonance sync")
+                .accessibilityAddTraits(.isButton)
                 
                 // 3. Lower Pinned Chat Terminal Frame (strictly under half the screen)
                 TerminalFrameView(

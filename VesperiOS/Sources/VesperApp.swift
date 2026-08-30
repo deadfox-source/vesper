@@ -129,7 +129,8 @@ private struct VesperAvatarBackgroundLayer: View {
                 audioLevel: synthesizer.audioLevel
             )
             .frame(width: 340, height: 340)
-            .rotation3DEffect(.degrees(28), axis: (x: 1, y: 0, z: 0))
+            .rotation3DEffect(.degrees(28 + telemetry.motionPitch * 15.0), axis: (x: 1, y: 0, z: 0))
+            .rotation3DEffect(.degrees(telemetry.motionRoll * 15.0), axis: (x: 0, y: 0, z: 1))
             .offset(y: -20)
             .opacity(screen == .home ? 0.35 : 0.0)
             
@@ -142,7 +143,11 @@ private struct VesperAvatarBackgroundLayer: View {
                 isCharging: telemetry.isCharging,
                 kpIndex: telemetry.spaceWeather.kpIndex,
                 temperature: telemetry.weather?.temperature ?? 22.0,
-                isOnline: network.isConnected
+                isOnline: network.isConnected,
+                motionPitch: telemetry.motionPitch,
+                motionRoll: telemetry.motionRoll,
+                motionYaw: telemetry.motionYaw,
+                tapTrigger: telemetry.tapPulseTrigger
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
