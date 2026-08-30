@@ -31,6 +31,8 @@ public struct VesperApp: App {
 public struct VesperRootView: View {
     @EnvironmentObject var nav: NavigationStore
     
+    public init() {}
+    
     public var body: some View {
         ZStack {
             // Absolute Void Black Background
