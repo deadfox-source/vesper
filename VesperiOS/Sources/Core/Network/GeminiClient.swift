@@ -72,9 +72,16 @@ public struct CardReflectionAnalysis: Codable, Sendable {
 public actor GeminiClient {
     public static let shared = GeminiClient()
     
-    // Primary model identifier supported on current Gemini API v1beta
+    // Active Gemini model cascade tried in sequence for maximum resilience
+    public static let supportedModels = [
+        "gemini-3.6-flash",
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
+        "gemini-1.5-flash",
+        "gemini-2.5-flash-lite"
+    ]
     public static let primaryModelName = "gemini-3.6-flash"
-    public static let fallbackModelName = "gemini-3.6-flash"
+    public static let fallbackModelName = "gemini-2.5-flash"
     
     private init() {}
     
@@ -136,7 +143,7 @@ public actor GeminiClient {
         }
         """
         
-        for modelName in [Self.primaryModelName, Self.fallbackModelName] {
+        for modelName in Self.supportedModels {
             guard let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/\(modelName):generateContent?key=\(key)") else {
                 continue
             }
@@ -235,7 +242,7 @@ public actor GeminiClient {
         }
         """
         
-        for modelName in [Self.primaryModelName, Self.fallbackModelName] {
+        for modelName in Self.supportedModels {
             guard let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/\(modelName):generateContent?key=\(key)") else {
                 continue
             }
@@ -341,7 +348,7 @@ public actor GeminiClient {
         4. Return plain text only (1-2 sentences).
         """
         
-        for modelName in [Self.primaryModelName, Self.fallbackModelName] {
+        for modelName in Self.supportedModels {
             guard let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/\(modelName):generateContent?key=\(key)") else {
                 continue
             }
@@ -426,7 +433,7 @@ public actor GeminiClient {
         Return EXACTLY a JSON array of 3 strings: ["topic 1", "topic 2", "topic 3"]
         """
         
-        for modelName in [Self.primaryModelName, Self.fallbackModelName] {
+        for modelName in Self.supportedModels {
             guard let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/\(modelName):generateContent?key=\(key)") else {
                 continue
             }
@@ -494,7 +501,7 @@ public actor GeminiClient {
         telemetrySummary: String? = nil,
         key: String
     ) async throws -> VesperAIResponse {
-        let modelsToTry = [Self.primaryModelName, Self.fallbackModelName]
+        let modelsToTry = Self.supportedModels
         
         var lastError: Error?
         for modelName in modelsToTry {

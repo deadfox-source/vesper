@@ -112,9 +112,9 @@ const callGeminiProxy = async (action: string, payload: any, signal?: AbortSigna
 // Fallback client-side SDK execution using GoogleGenerativeAI
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const callGeminiClientFallback = async (action: string, payload: any, signal?: AbortSignal): Promise<any> => {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+  const apiKey = (typeof window !== 'undefined' ? localStorage.getItem('VESPER_GEMINI_API_KEY') : null) || import.meta.env.VITE_GEMINI_API_KEY || "";
   if (!apiKey) {
-    throw new Error("Gemini API key is missing. Start server.js locally or rebuild with VITE_GEMINI_API_KEY.");
+    throw new Error("Gemini API key is missing. Start server.js locally, enter it in settings, or rebuild with VITE_GEMINI_API_KEY.");
   }
 
   // Combine parent abort signal and local timeout
