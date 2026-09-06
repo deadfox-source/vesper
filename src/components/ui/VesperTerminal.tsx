@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles } from 'lucide-react';
 import { ScrambleText } from './ScrambleText';
 import { useVesperStore } from '../../modules/StateManager/vesperStore';
 
@@ -528,8 +527,6 @@ const parseCardPrompt = (text: string): ParsedCardPrompt | null => {
             </div>
           </>
         )}
-
-      </div>
 
       </div>
 

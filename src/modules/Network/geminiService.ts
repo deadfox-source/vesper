@@ -146,12 +146,11 @@ const callGeminiClientFallback = async (action: string, payload: any, signal?: A
 
     const getModel = (systemInstruction?: string, config?: Record<string, unknown>) => {
       return genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
+        model: "gemini-3.6-flash",
         systemInstruction: systemInstruction || VESPER_PERSONA,
         generationConfig: {
           temperature: 0.85,
           maxOutputTokens: 1000,
-          thinkingConfig: { thinkingBudget: 0 },
           ...config
         },
         safetySettings
@@ -774,7 +773,7 @@ export const chatAboutReadingStream = async function*(
       const { GoogleGenerativeAI } = await import('@google/generative-ai');
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
+        model: "gemini-3.6-flash",
         systemInstruction: VESPER_PERSONA,
       });
 

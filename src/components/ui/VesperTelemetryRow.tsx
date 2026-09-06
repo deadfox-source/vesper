@@ -1,5 +1,4 @@
 import React, { useMemo, useRef, useEffect } from 'react';
-import { motion } from 'motion/react';
 import { Cloud, Battery, Globe, Activity, Navigation } from 'lucide-react';
 import { useRealTelemetry } from '../../modules/utils/useRealTelemetry';
 import { ScrambleText } from './ScrambleText';

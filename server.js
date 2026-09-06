@@ -167,12 +167,11 @@ if (API_KEY) {
     { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
   ];
   model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
+    model: "gemini-3.6-flash",
     systemInstruction: VESPER_PERSONA,
     generationConfig: {
       temperature: 0.85,
-      maxOutputTokens: 1000,
-      thinkingConfig: { thinkingBudget: 0 }
+      maxOutputTokens: 1000
     },
     safetySettings
   });

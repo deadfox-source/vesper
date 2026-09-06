@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useBoardStore } from '../../modules/StateManager/boardState';
-import { useRealTelemetry } from '../../modules/utils/useRealTelemetry';
 import { useVesperStore } from '../../modules/StateManager/vesperStore';
 
 export const SierpinskiPet: React.FC = () => {

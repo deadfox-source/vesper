@@ -256,7 +256,7 @@ const processTaskQueue = async () => {
   isProcessingQueue = false;
 };
 
-const enqueueSpeech = async (text: string, options?: { wait?: boolean }): Promise<void> => {
+const enqueueSpeech = async (text: string, _options?: { wait?: boolean }): Promise<void> => {
   const parts = text.split(/([.!?]+(?:\s+|$))/g);
   const rawSentences: string[] = [];
   for (let i = 0; i < parts.length; i += 2) {
